@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core/OverridableComponent";
 
 import {
+	Info as AboutIcon,
 	DirectionsCar as CarIcon,
 	Home as HomeIcon,
 } from "@material-ui/icons";
@@ -48,6 +49,11 @@ const Drawer = (props: Props) => {
 			path: "/garage",
 			icon: CarIcon,
 		},
+		{
+			title: "About",
+			path: "/about",
+			icon: AboutIcon,
+		}
 	];
 
 	const redirectOnClick = (path: string) => () => {

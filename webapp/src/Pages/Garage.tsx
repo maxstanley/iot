@@ -5,14 +5,6 @@ import {
 	Typography,
 } from "@material-ui/core";
 
-import environment from "../environment";
-
-const {
-	REACT_APP_GARAGE_USER,
-	REACT_APP_GARAGE_PASSWORD,
-	REACT_APP_URL
-} = environment;
-
 interface State {
 	button: {
 		text: string;
@@ -39,7 +31,7 @@ const Garage = () => {
 			},
 		}));
 
-		const authentication = Buffer.from(`${REACT_APP_GARAGE_USER}:${REACT_APP_GARAGE_PASSWORD}`);
+		const authentication = Buffer.from(`${process.env.REACT_APP_GARAGE_USER!}:${process.env.REACT_APP_GARAGE_PASSWORD!}`);
 
 		const requestHeaders = new Headers();
 		requestHeaders.append("Authorization", `Basic ${authentication.toString("base64")}`);
@@ -49,7 +41,7 @@ const Garage = () => {
 			headers: requestHeaders,
 		};
 
-		const response = await fetch(REACT_APP_URL, requestOptions);
+		const response = await fetch(process.env.REACT_APP_GARAGE_URL!, requestOptions);
 
 		if (response.status !== 200) {
 			setState((state: State) => ({
@@ -92,6 +84,7 @@ const Garage = () => {
 				className="roundedButton"
 				style={{
 					backgroundColor: (!state.button.disabled) ? "#FF0000" : "#00FF00",
+					color: (!state.button.disabled) ? "#FFFFFF" : "#000000",
 					margin: "5vh 0",
 				}}
 			>

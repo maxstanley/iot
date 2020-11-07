@@ -14,6 +14,7 @@ import {
 } from "./Layout";
 
 import {
+	About,
 	Garage,
 	Home
 } from "./Pages";
@@ -31,6 +32,7 @@ function App() {
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route exact path="/garage" component={Garage} />
+					<Route exact path="/about" component={About} />
 				</Switch>
 			</Container>
 		</Router>
