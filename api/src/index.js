@@ -3,7 +3,7 @@ const express = require("express");
 const FormData = require("form-data");
 
 const {
-	URL,
+	IOT_IP,
 	GATE_USER,
 	GATE_PASS
 } = process.env;
@@ -18,10 +18,9 @@ app.get("/open/:id", async (request, response) => {
 	data.append("pass", GATE_PASS);
 	data.append("send-login", "Sign+In");
 
-	console.log("Log In");
 	const config = {
 		method: "POST",
-		url: `${URL}/index.php`,
+		url: `http://${IOT_IP}/index.php`,
 		data,
 		headers: {
 			...data.getHeaders()
@@ -37,12 +36,11 @@ app.get("/open/:id", async (request, response) => {
 
 	const cookie = axios_response.headers["set-cookie"][0];
 
-	console.log("Open Door");
 	axios_response = await axios({
-		url: `${URL}/isg/opendoor.php?numdoor=${id}&status=2`,
+		url: `http://${IOT_IP}/isg/opendoor.php?numdoor=${id}&status=2`,
 		method: "GET",
 		headers: {
-			Cookie: `${cookie.split("; ")[0]}; Path=/;`
+			Cookie: `${cookie.split("; ")[0]}; Path=/; Domain=${IOT_IP};`
 		},
 		withCredentials: true
 	});
@@ -56,3 +54,4 @@ app.get("/open/:id", async (request, response) => {
 app.listen(3000, () => {
 	console.log("App listening on port 3000");
 });
+
