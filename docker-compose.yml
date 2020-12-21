@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  proxy:
+    container_name: proxy
+    restart: unless-stopped
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/srv/proxy/conf:/etc/nginx/conf.d/"
+      - "/srv/proxy/logs/:/var/log/nginx/"
+      - "/srv/proxy/static/:/var/www/html/"
+      - "/srv/certbot/etc-letsencrypt/:/etc/letsencrypt/"
+      - "/srv/proxy/htpasswd:/etc/nginx/.htpasswd"
+    depends_on:
+      - garage
+    networks:
+      backend:
+      public_network:
+        ipv4_address: 172.16.0.6
+      wifi_network:
+        ipv4_address: 192.168.0.6
+ 
+  garage:
+    container_name: garage
+    restart: on-failure
+    build:
+      context: ./api/
+    environment:
+      - IOT_IP=${IOT_IP}
+      - GATE_USER=${GATE_USER}
+      - GATE_PASS=${GATE_PASS}
+    networks:
+      backend:
+      iot_network:
+        ipv4_address: 192.168.1.4
+
+networks:
+  wifi_network:
+    external: true
+  public_network:
+    external: true
+  iot_network:
+    external: true
+  backend:
